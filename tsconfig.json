@@ -12,16 +12,13 @@
       ],
       "target": "es2017",
       "module": "commonjs",
+      "esModuleInterop": true,
       "moduleResolution": "node",
       "outDir": "./build",
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
+      "sourceMap": true
       // custom configs
       // "noImplicitAny": true,
-      // Below for key configs are required to generate .d.ts declaration file alongside the js file
-      "declaration": true,
-      "declarationMap": true,
-      "inlineSourceMap": true,
-      "inlineSources": true
    }
 }

@@ -1,21 +1,38 @@
 import "reflect-metadata";
-import { createConnection } from "typeorm";
-import { User } from "./entity/User";
+import express, { Request, Response } from 'express';
+import logger from 'morgan';
+import cors from 'cors';
+import cookieParser from "cookie-parser";
+import methodOverride from 'method-override';
 
-createConnection().then(async connection => {
+import { connection } from './connection/connection';
+import usersRouter from './routes/usersRouter';
 
-    console.log("Inserting a new user into the database...");
-    const user = new User();
-    user.firstName = "Timber";
-    user.lastName = "Saw";
-    user.age = 25;
-    await connection.manager.save(user);
-    console.log("Saved a new user with id: " + user.id);
+connection.then(async connection => {
+    // Configure the server here
+    const app = express();
+    app.use(logger('dev'));
+    app.use(cors());
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: false }))
+    app.use(cookieParser());
 
-    console.log("Loading users from the database...");
-    const users = await connection.manager.find(User);
-    console.log("Loaded users: ", users);
+    app.use(
+        methodOverride((req: Request, res: Response) => {
+            if (req.body && req.body._method) {
+                const method = req.body._method;
+                return method;
+            }
+        })
+    );
 
-    console.log("Here you can setup and run express/koa/any other framework.");
+    // Use routes below
+    // await Bootstrap().catch(err => console.error(err));
 
-}).catch((error) => console.log(error));
+    app.use('/api/v1/users', usersRouter);
+
+
+    app.listen(3000);
+    console.log('Express Application is running on port 3000');
+
+}).catch((error) => console.log("TypeORM Connection Error: ", error));
