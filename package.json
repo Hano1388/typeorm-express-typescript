@@ -1,0 +1,25 @@
+{
+   "name": "typeorm-express-typescript",
+   "version": "0.0.1",
+   "description": "Awesome project developed with TypeORM.",
+   "type": "commonjs",
+   "types": "./dist/index.d.ts",
+   "scripts": {
+      "start": "node ./dist/index.js",
+      "build": "tsc",
+      "watch-ts": "tsc --watch",
+      "watch-node": "nodemon ./dist/src/index.js",
+      "test": "cd test && npm run test"
+   },
+   "devDependencies": {
+      "@types/node": "^8.0.29",
+      "nodemon": "^2.0.4",
+      "ts-node": "3.3.0",
+      "typescript": "3.3.3333"
+   },
+   "dependencies": {
+      "pg": "^8.3.0",
+      "reflect-metadata": "^0.1.10",
+      "typeorm": "0.2.25"
+   }
+}
