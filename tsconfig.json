@@ -20,5 +20,6 @@
       "sourceMap": true
       // custom configs
       // "noImplicitAny": true,
+
    }
 }

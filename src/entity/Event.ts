@@ -20,10 +20,10 @@ export class Event {
     description: string;
 
     @CreateDateColumn({ name: "created_at", default: () => "CURRENT_TIMESTAMP" })
-    createdAt: Date;
+    created_at: Date;
 
     @UpdateDateColumn({ name: "updated_at", nullable: true })
-    updatedAt: Date;
+    updated_at: Date;
 
     @ManyToOne((type) => User, (user) => user.events)
     user: User;
