@@ -9,6 +9,7 @@ export const connection = createConnection({
     // username: "hano", // Your db client username
     // password: "supersecret", // Your db client password
     database: "typeorm_express_typescript", // our created database name, you can have your own
+    // database: process.env.DATABASE_URL, // database url for production
     entities: [
         // typeORM will not be able to create database table if we forget to put entity class name here..
         User, // our User entity class
