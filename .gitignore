@@ -5,3 +5,7 @@ build/
 tmp/
 temp/
 /src/typeormCommands.md
+
+# APP_KEYS
+APP_KEYS.ts
+dist/APP_KEYS.js

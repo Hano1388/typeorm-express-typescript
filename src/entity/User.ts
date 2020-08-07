@@ -1,11 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, BeforeInsert } from "typeorm";
 import { IsDateString, IsDefined, IsEmail, IsEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 
 import { Event } from './Event';
-import { isString } from "util";
+import { geocoder } from '../utils/geocoder/index';
+import { setAddressFields } from './hooks/setAddressFields';
 
 @Entity({ name: "users" })
 export class User {
+
+    @BeforeInsert()
+    async setUserAddressFields() {
+        await setAddressFields(this);
+    }
 
     @PrimaryGeneratedColumn("uuid")
     @IsEmpty({ always: true, message: "You do not need to send ID!!" })
@@ -48,6 +54,16 @@ export class User {
     @Column({ type: 'boolean', default: false })
     @IsEmpty({ always: true })
     is_admin: boolean;
+
+    @Column({ name: 'address', nullable: true })
+    address: string;
+
+    @Column({ type: 'decimal', name: 'latitude', nullable: true })
+    latitude: number;
+
+    @Column({ type: 'decimal', name: 'longitude', nullable: true })
+    longitude: number;
+
 
     @OneToMany(type => Event, (event) => event.user, {
         onDelete: "CASCADE",

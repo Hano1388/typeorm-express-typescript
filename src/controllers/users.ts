@@ -6,28 +6,30 @@ import Auth from '../utils/auth';
 
 export = {
     createUser: async (req: Request, res: Response, next: NextFunction): Promise<Response> => {
-        const { first_name, last_name, email, password } = req.body;
-        const foundUser = await getManager().createQueryBuilder(User, 'user')
-            .where("user.email = :email", { email: email })
-            .getOne();
+        try {
+            const { first_name, last_name, email, password } = req.body;
+            const foundUser = await getManager().createQueryBuilder(User, 'user')
+                .where("user.email = :email", { email: email })
+                .getOne();
 
-        if (!foundUser) {
-            try {
+            if (!foundUser) {
                 let userParams;
-                const hash = await Auth.hashPassword(password).catch(err => console.error(err));
+                const hash = await Auth.hashPassword(password)
                 userParams = { first_name, last_name, email, password: hash };
 
                 const userRepo = getManager().getRepository(User);
                 const newUser = userRepo.create(userParams);
-                const user = await userRepo.save(newUser).catch(err => console.error(err));
+                const user = await userRepo.save(newUser)
                 return res.json({ id: user['id'] });
-            } catch (err) {
-                next(err[0]);
-            }
-        } else {
+            } else {
 
-            res.statusCode = 400;
-            next(new Error('Email in use'));
+                res.statusCode = 400;
+                next(new Error('Email in use'));
+            }
+
+        } catch (err) {
+            next(err[0])
         }
+
     }
 }
