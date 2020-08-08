@@ -16,9 +16,9 @@ export = {
                 let userParams;
                 const hash = await Auth.hashPassword(password)
                 userParams = { first_name, last_name, email, password: hash };
-
                 const userRepo = getManager().getRepository(User);
                 const newUser = userRepo.create(userParams);
+                console.log('userParams: ', newUser);
                 const user = await userRepo.save(newUser)
                 return res.json({ id: user['id'] });
             } else {
@@ -28,8 +28,8 @@ export = {
             }
 
         } catch (err) {
-            next(err[0])
+            res.statusCode = 400;
+            next(err)
         }
-
     }
 }

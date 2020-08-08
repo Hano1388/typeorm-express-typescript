@@ -9,8 +9,9 @@ export const
         try {
             const userRepo = getManager().getRepository(User);
             const newUser = userRepo.create(req.body);
+            console.log(newUser);
 
-            await validateOrReject(newUser, { skipMissingProperties: true, validationError: { target: false } });
+            await validateOrReject(newUser, { skipMissingProperties: true });
             next();
         } catch (err) {
             res.statusCode = 400;
@@ -18,9 +19,10 @@ export const
             const errorList = generateErrorMessages(err);
             /*
                 [
-                    "firstName should not be null or undefined",
+                    "first_name must be longer than or equal to 3 characters",
+                    "last_name must be longer than or equal to 3 characters",
                     "email must be an email",
-                    "password should not be null or undefined"
+                    "password must be longer than or equal to 5 characters"
                 ]
             */
             next({ message: errorList });

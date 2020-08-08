@@ -2,7 +2,6 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 import { IsDateString, IsDefined, IsEmail, IsEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 
 import { Event } from './Event';
-import { geocoder } from '../utils/geocoder/index';
 import { setAddressFields } from './hooks/setAddressFields';
 
 @Entity({ name: "users" })
@@ -17,15 +16,13 @@ export class User {
     @IsEmpty({ always: true, message: "You do not need to send ID!!" })
     id: string;
 
-    @Column()
-    @IsDefined()
+    @Column({ nullable: true })
     @IsString()
     @MinLength(3)
     @MaxLength(30)
     first_name: string;
 
-    @Column()
-    @IsDefined()
+    @Column({ nullable: true })
     @IsString()
     @MinLength(3)
     @MaxLength(30)

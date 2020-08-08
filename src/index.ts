@@ -6,8 +6,9 @@ import cookieParser from "cookie-parser";
 import methodOverride from 'method-override';
 
 import { connection } from './connection/connection';
-// import { Error } from './types';
 import usersRouter from './routes/usersRouter';
+import sessionRouter from './routes/sessionRouter';
+import { COOKIE_SECRET } from "../APP_KEYS";
 
 connection.then(async connection => {
     // Configure the server here
@@ -16,7 +17,7 @@ connection.then(async connection => {
     app.use(cors());
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }))
-    app.use(cookieParser());
+    app.use(cookieParser(COOKIE_SECRET));
 
     app.use(
         methodOverride((req: Request, res: Response) => {
@@ -28,9 +29,8 @@ connection.then(async connection => {
     );
 
     // Use routes below
-    // await Bootstrap().catch(err => console.error(err));
-
     app.use('/api/v1/users', usersRouter);
+    app.use('/api/v1/session', sessionRouter);
 
 
     app.use((req: Request, res: Response, next: NextFunction) => {
