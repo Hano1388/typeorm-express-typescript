@@ -9,10 +9,9 @@ export const
         try {
             const userRepo = getManager().getRepository(User);
             const newUser = userRepo.create(req.body);
-            console.log(newUser);
-
             await validateOrReject(newUser, { skipMissingProperties: true });
             next();
+
         } catch (err) {
             res.statusCode = 400;
             // We can generate a list of returned errors from validations

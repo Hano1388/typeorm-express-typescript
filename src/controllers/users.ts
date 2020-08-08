@@ -18,8 +18,15 @@ export = {
                 userParams = { first_name, last_name, email, password: hash };
                 const userRepo = getManager().getRepository(User);
                 const newUser = userRepo.create(userParams);
-                console.log('userParams: ', newUser);
-                const user = await userRepo.save(newUser)
+                const user = await userRepo.save(newUser);
+                // Create a cookie and sign in automatically after signing up
+                res.cookie('user_id', user['id'], {
+                    expires: new Date(Date.now() + 700000),
+                    httpOnly: true,
+                    secure: req.app.get('env') !== 'development',
+                    signed: true
+                });
+
                 return res.json({ id: user['id'] });
             } else {
 

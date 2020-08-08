@@ -33,5 +33,14 @@ export = {
             res.statusCode = 400;
             next(err);
         }
+    },
+
+    destroySession: async (req: Request, res: Response, next: NextFunction): Promise<Response> => {
+        try {
+            res.clearCookie('user_id');
+            return res.json({ message: 'Signed out' })
+        } catch (err) {
+            next(err);
+        }
     }
 }
