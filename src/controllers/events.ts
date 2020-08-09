@@ -5,6 +5,7 @@ import { Event } from '../entity/Event';
 import { User } from '../entity/User';
 
 export = {
+    // POST: /events
     createEvent: async (req: Request, res: Response, next: NextFunction): Promise<Response> => {
         try {
             const eventRepo = getManager().getRepository(Event);
@@ -14,6 +15,16 @@ export = {
             newEvent['user'] = user
             await eventRepo.save(newEvent);
             return res.json(newEvent);
+        } catch (err) {
+            next(err);
+        }
+    },
+
+    getAllEvents: async (req: Request, res: Response, next: NextFunction): Promise<Response> => {
+        try {
+            // const eventsRepo = getManager().getRepository(Event);
+            const events = await getManager().query(`SELECT * FROM events`);
+            return res.json(events);
         } catch (err) {
             next(err);
         }

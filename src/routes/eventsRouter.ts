@@ -1,7 +1,8 @@
 import express from 'express';
 
-import EventsCountroller from '../controllers/events';
+import EventsController from '../controllers/events';
 import { validateEvent } from '../middlewares/validations/validateEvent';
 const router = express.Router();
 
-export = router.post('/', validateEvent, EventsCountroller.createEvent);
+export = router.post('/', validateEvent, EventsController.createEvent)
+    .get('/', EventsController.getAllEvents);
