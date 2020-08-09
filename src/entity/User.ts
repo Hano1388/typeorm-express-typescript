@@ -3,13 +3,27 @@ import { IsDateString, IsDefined, IsEmail, IsEmpty, IsString, MaxLength, MinLeng
 
 import { Event } from './Event';
 import { setAddressFields } from './hooks/setAddressFields';
+import { SharedProps } from "./SharedProps.helper";
 
 @Entity({ name: "users" })
-export class User {
+export class User extends SharedProps {
 
     @BeforeInsert()
     async setUserAddressFields() {
         await setAddressFields(this);
+    }
+
+    constructor(
+        first_name: string,
+        last_name: string,
+        email: string,
+        password: string,
+    ) {
+        super();
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.email = email;
+        this.password = password;
     }
 
     @PrimaryGeneratedColumn("uuid")
@@ -40,14 +54,6 @@ export class User {
     password: string
 
 
-    @CreateDateColumn({ name: "created_at", default: () => "CURRENT_TIMESTAMP" })
-    @IsDateString()
-    created_at: Date;
-
-    @UpdateDateColumn({ name: "updated_at", nullable: true })
-    @IsDateString()
-    updated_at: Date;
-
     @Column({ type: 'boolean', default: false })
     @IsEmpty({ always: true })
     is_admin: boolean;
@@ -61,10 +67,9 @@ export class User {
     @Column({ type: 'decimal', name: 'longitude', nullable: true })
     longitude: number;
 
-
-    @OneToMany(type => Event, (event) => event.user, {
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
+    @OneToMany(() => Event, (event: Event) => event.user, {
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
     })
-    events: Event[]
+    events: Array<Event>;
 }

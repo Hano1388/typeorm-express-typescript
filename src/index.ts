@@ -6,9 +6,10 @@ import cookieParser from "cookie-parser";
 import methodOverride from 'method-override';
 
 import { connection } from './connection/connection';
+import { COOKIE_SECRET } from "../APP_KEYS";
 import usersRouter from './routes/usersRouter';
 import sessionRouter from './routes/sessionRouter';
-import { COOKIE_SECRET } from "../APP_KEYS";
+import eventsRouter from './routes/eventsRouter';
 
 connection.then(async connection => {
     // Configure the server here
@@ -31,6 +32,7 @@ connection.then(async connection => {
     // Use routes below
     app.use('/api/v1/users', usersRouter);
     app.use('/api/v1/session', sessionRouter);
+    app.use('/api/v1/events', eventsRouter);
 
 
     app.use((req: Request, res: Response, next: NextFunction) => {

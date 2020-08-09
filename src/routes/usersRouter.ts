@@ -2,7 +2,7 @@ import { validate } from 'class-validator';
 import express from 'express';
 
 import UsersController from '../controllers/users';
-import { validateUser } from '../middlewares/validations/user';
+import { validateUser } from '../middlewares/validations/validateUser';
 
 
 const router = express.Router();
