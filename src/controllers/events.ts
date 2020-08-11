@@ -40,6 +40,18 @@ export = {
         } catch (err) {
             next(err);
         }
+    },
+
+    // PATCH: events/:id
+    updateEvent: async (req: Request, res: Response, next: NextFunction): Promise<Response> => {
+        try {
+            const eventRepo = getManager().getRepository(Event);
+            const updatedEvent = eventRepo.create(req.body);
+            await eventRepo.save(updatedEvent);
+            return res.json(updatedEvent);
+        } catch (err) {
+            next(err);
+        }
     }
 
 }
