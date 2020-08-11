@@ -57,12 +57,6 @@ export class Event extends SharedProps {
     @IsDefined()
     event_date: Date;
 
-    // @CreateDateColumn({ type: "timestamp", name: "created_at", default: () => "CURRENT_TIMESTAMP" })
-    // created_at: Date;
-
-    // @UpdateDateColumn({ type: "timestamp", name: "updated_at", nullable: true })
-    // updated_at: Date;
-
     @ManyToOne((type) => User, (user) => user.events)
     user: User;
 }
