@@ -7,4 +7,5 @@ const router = express.Router();
 export = router.post('/', validateEvent, EventsController.createEvent)
     .get('/', EventsController.getAllEvents)
     .get('/:id', EventsController.getOneEvent)
-    .patch('/:id', validateEvent, EventsController.updateEvent);
+    .patch('/:id', validateEvent, EventsController.updateEvent)
+    .delete('/:id', EventsController.deleteEvent);

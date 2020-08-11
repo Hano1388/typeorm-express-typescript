@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { getManager } from 'typeorm';
+import { getManager, EventSubscriber } from 'typeorm';
 import { Event } from '../entity/Event';
 import { User } from '../entity/User';
 
@@ -36,6 +36,10 @@ export = {
             //     .where("event.id = :id", { id: req.params.id }).getOne();
             const eventRepo = getManager().getRepository(Event);
             const event = await eventRepo.findOne(req.params.id);
+            if (!event) {
+                res.statusCode = 404;
+                throw new Error('Event Not Found');
+            }
             return res.json(event);
         } catch (err) {
             next(err);
@@ -49,6 +53,24 @@ export = {
             const updatedEvent = eventRepo.create(req.body);
             await eventRepo.save(updatedEvent);
             return res.json(updatedEvent);
+        } catch (err) {
+            next(err);
+        }
+    },
+
+    // DELETE: events/:id
+    deleteEvent: async (req: Request, res: Response, next: NextFunction): Promise<Response> => {
+        try {
+            const { id } = req.params;
+            const EventRepo = getManager().getRepository(Event);
+            const event = await EventRepo.findOne({ where: { id } });
+            if (!event) {
+                res.statusCode = 400;
+                throw new Error(`The Event with id: ${id} does not exist`)
+            }
+
+            await EventRepo.remove(event);
+            return res.json('Destroyed Event!');
         } catch (err) {
             next(err);
         }

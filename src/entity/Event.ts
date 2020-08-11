@@ -13,6 +13,9 @@ import { SharedProps } from './SharedProps.helper';
 
 @Entity({ name: "events" })
 export class Event extends SharedProps {
+    remove() {
+        throw new Error('Method not implemented.');
+    }
     @BeforeInsert()
     async setEventAddressFields() {
         await setAddressFields(this);
